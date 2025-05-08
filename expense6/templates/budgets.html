@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budgets</title>
+    <style>
+        :root { 
+            --primary: #4a6fa5; 
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --success: #28a745;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #f5f5f5; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            padding: 20px; 
+        }
+        h1 { 
+            color: var(--primary); 
+            margin-bottom: 20px; 
+        }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+        }
+        .btn { 
+            padding: 8px 16px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .progress-container { 
+            margin-bottom: 25px; 
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-info { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 5px; 
+        }
+        .progress-bar { 
+            height: 10px; 
+            background: #e9ecef; 
+            border-radius: 5px; 
+            overflow: hidden; 
+            margin-bottom: 10px;
+        }
+        .progress { 
+            height: 100%; 
+            background: var(--primary); 
+            transition: width 0.3s ease;
+        }
+        .danger { background: var(--danger); }
+        .warning { background: var(--warning); }
+        .success { background: var(--success); }
+        
+        /* Suggestions styling */
+        .suggestions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .suggestion-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .suggestion-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        .suggestion-card p {
+            margin-bottom: 10px;
+        }
+        .suggestion-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .btn-accept {
+            background: var(--success);
+            color: white;
+        }
+        .btn-dismiss {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        /* Budget summary */
+        .budget-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+        }
+        .summary-item {
+            text-align: center;
+            flex: 1;
+        }
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .positive {
+            color: var(--success);
+        }
+        .negative {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Budgets</h1>
+            <a href="#" class="btn">Add Budget</a>
+        </div>
+        
+        <!-- Budget Summary -->
+        <div class="budget-summary">
+            <div class="summary-item">
+                <div>Total Budget</div>
+                <div class="summary-value">$1,500</div>
+            </div>
+            <div class="summary-item">
+                <div>Total Spent</div>
+                <div class="summary-value negative">$1,350</div>
+            </div>
+            <div class="summary-item">
+                <div>Remaining</div>
+                <div class="summary-value positive">$150</div>
+            </div>
+        </div>
+        
+        <!-- Budget Categories -->
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Food</span>
+                <span>$350/$500 (70%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" style="width: 70%"></div>
+            </div>
+            <div class="progress-info">
+                <small>Daily average: $25 | Projected monthly: $750</small>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Entertainment</span>
+                <span>$450/$500 (90%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress warning" style="width: 90%"></div>
+            </div>
+            <div class="progress-info">
+                <small>You've spent 90% of your budget with 10 days remaining</small>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Transport</span>
+                <span>$550/$500 (110%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress danger" style="width: 110%"></div>
+            </div>
+            <div class="progress-info">
+                <small>You've exceeded your budget by $50</small>
+            </div>
+        </div>
+        
+        <!-- Budget Suggestions Section -->
+        <div class="suggestions">
+            <h2>Budget Suggestions</h2>
+            
+            <div class="suggestion-card">
+                <h3>Reduce Entertainment Spending</h3>
+                <p>Your entertainment budget is nearly exhausted. Consider reducing discretionary spending in this category for the rest of the month.</p>
+                <div class="suggestion-actions">
+                    <button class="btn btn-sm btn-accept">Apply Suggestion</button>
+                    <button class="btn btn-sm btn-dismiss">Dismiss</button>
+                </div>
+            </div>
+            
+            <div class="suggestion-card">
+                <h3>Adjust Transport Budget</h3>
+                <p>You've consistently exceeded your transport budget. Consider increasing this budget by $50/month based on your spending patterns.</p>
+                <div class="suggestion-actions">
+                    <button class="btn btn-sm btn-accept">Apply Suggestion</button>
+                    <button class="btn btn-sm btn-dismiss">Dismiss</button>
+                </div>
+            </div>
+            
+            <div class="suggestion-card">
+                <h3>Optimize Food Budget</h3>
+                <p>You could save ~$100/month by shopping at discount grocery stores on weekends when deals are best.</p>
+                <div class="suggestion-actions">
+                    <button class="btn btn-sm btn-accept">Apply Suggestion</button>
+                    <button class="btn btn-sm btn-dismiss">Dismiss</button>
+                </div>
+            </div>
+            
+            <div class="suggestion-card">
+                <h3>Create New Savings Category</h3>
+                <p>Based on your income and expenses, you could allocate $200/month to a new savings category.</p>
+                <div class="suggestion-actions">
+                    <button class="btn btn-sm btn-accept">Create Category</button>
+                    <button class="btn btn-sm btn-dismiss">Dismiss</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple interaction for the suggestion buttons
+        document.querySelectorAll('.btn-accept').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.suggestion-card');
+                card.style.opacity = '0.5';
+                card.style.backgroundColor = '#e8f5e9';
+                setTimeout(() => {
+                    card.style.display = 'none';
+                }, 300);
+                // In a real app, you would make an API call here to apply the suggestion
+            });
+        });
+        
+        document.querySelectorAll('.btn-dismiss').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.suggestion-card');
+                card.style.opacity = '0.5';
+                setTimeout(() => {
+                    card.style.display = 'none';
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>

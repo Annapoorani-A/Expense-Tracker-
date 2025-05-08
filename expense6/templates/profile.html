@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <style>
+        :root { --primary: #4a6fa5; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; }
+        h1 { color: var(--primary); margin-bottom: 20px; text-align: center; }
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .avatar { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 10px; background: #ddd; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <div class="avatar"></div>
+            <h1>{{ session.username }}</h1>
+        </div>
+        <form>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" value="{{ session.username }}">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="user@example.com">
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" placeholder="Leave blank to keep current">
+            </div>
+            <button type="submit" class="btn">Update Profile</button>
+        </form>
+    </div>
+</body>
+</html>
