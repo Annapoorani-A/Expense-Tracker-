@@ -1,143 +1,267 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reports</title>
+    <title>Financial Reports</title>
     <style>
-        :root { --primary: #4a6fa5; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; }
-        h1 { color: var(--primary); margin-bottom: 20px; }
-        .filters { display: flex; gap: 10px; margin-bottom: 20px; }
-        select, button { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: var(--primary); color: white; border: none; cursor: pointer; }
-        button:hover { opacity: 0.9; }
-        .chart-container { height: 300px; margin: 20px 0; }
-        .summary { display: flex; gap: 20px; margin-top: 20px; }
-        .summary-card { flex: 1; padding: 15px; border-radius: 8px; text-align: center; }
-        .income { background: #e6f7ee; color: #28a745; }
-        .expense { background: #fee8e9; color: #dc3545; }
+        :root {
+            --primary-color: #4a6fa5;  /* Blue from registration */
+            --secondary-color: #4CAF50; /* Green from registration */
+            --danger-color: #dc3545;    /* Red for expenses */
+            --info-color: #17a2b8;      /* Teal for savings */
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--light-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--dark-color);
+        }
+        
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .report-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .report-period {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .report-period select {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .report-period button {
+            padding: 8px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .report-period button:hover {
+            background: #3a5a80;
+        }
+        
+        .report-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .report-card h2 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .income { color: var(--secondary-color); }
+        .expense { color: var(--danger-color); }
+        .savings { color: var(--info-color); }
+        
+        .total-row {
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #3d8b40;
+        }
+        
+        @media (max-width: 600px) {
+            .report-period {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .report-period select, 
+            .report-period button {
+                width: 100%;
+            }
+        }
     </style>
-    <!-- Load Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Reports</h1>
-        <div class="filters">
-            <select id="timeRange">
-                <option value="30">Last 30 Days</option>
-                <option value="thisMonth">This Month</option>
-                <option value="lastMonth">Last Month</option>
-            </select>
-            <select id="category">
-                <option value="all">All Categories</option>
-                <option value="food">Food</option>
-                <option value="transport">Transport</option>
-                <option value="entertainment">Entertainment</option>
-            </select>
-            <button id="generateBtn">Generate Report</button>
+    <div class="report-container">
+        <div class="report-header">
+            <h1>Financial Report</h1>
+            
+            <form method="GET" action="{{ url_for('reports') }}" class="report-period">
+                <select name="month">
+                    {% for m in months %}
+                    <option value="{{ m }}" {% if m == month %}selected{% endif %}>
+                        {{ m }} - {{ ['January','February','March','April','May','June',
+                                     'July','August','September','October','November','December'][m-1] }}
+                    </option>
+                    {% endfor %}
+                </select>
+                
+                <select name="year">
+                    {% for y in years %}
+                    <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">Generate Report</button>
+            </form>
         </div>
-        <div class="chart-container">
-            <canvas id="reportChart"></canvas>
+        
+        <!-- Income Report -->
+        <div class="report-card">
+            <h2>Income</h2>
+            {% if income_data %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in income_data %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td class="income">${{ "%.2f"|format(item.total) }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="total-row">
+                        <td>Total Income</td>
+                        <td class="income">${{ "%.2f"|format(income_data|sum(attribute='total')) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <p>No income data available for this period</p>
+            {% endif %}
         </div>
-        <div class="summary">
-            <div class="summary-card income">
-                <h3>Total Income</h3>
-                <p id="totalIncome">$0.00</p>
+        
+        <!-- Expenses Report -->
+        <div class="report-card">
+            <h2>Expenses</h2>
+            {% if expense_data %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in expense_data %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td class="expense">₹{{ "%.2f"|format(item.total) }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="total-row">
+                        <td>Total Expenses</td>
+                        <td class="expense">₹{{ "%.2f"|format(expense_data|sum(attribute='total')) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <p>No expense data available for this period</p>
+            {% endif %}
+        </div>
+        
+        <!-- Savings Summary -->
+        <div class="report-card">
+            <h2>Savings</h2>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <div style="margin-bottom: 15px;">
+                    <h3 style="margin-bottom: 5px;">Total Saved</h3>
+                    <p class="savings" style="font-size: 24px;">₹{{ "%.2f"|format(savings_data) }}</p>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <h3 style="margin-bottom: 5px;">Net Savings</h3>
+                    {% set net_savings = (income_data|sum(attribute='total') - expense_data|sum(attribute='total')) if income_data and expense_data else 0 %}
+                    <p class="net-savings" data-value="{{ net_savings }}">
+    ${{ "%.2f"|format(net_savings) }}
+</p>
+
+<style>
+    .net-savings {
+        font-size: 24px;
+    }
+    .net-savings[data-value^="-"] {
+        color: var(--danger-color);
+    }
+    .net-savings:not([data-value^="-"]) {
+        color: var(--secondary-color);
+    }
+</style>
+                        ${{ "%.2f"|format(net_savings) }}
+                    </p>
+                </div>
             </div>
-            <div class="summary-card expense">
-                <h3>Total Expense</h3>
-                <p id="totalExpense">$0.00</p>
-            </div>
+        </div>
+        
+        <!-- Download Section -->
+        <div class="download-section">
+            <a href="{{ url_for('download_report', month=month, year=year) }}" class="download-btn">
+                Download Report (CSV)
+            </a>
         </div>
     </div>
-
-    <script>
-        // Sample Data (Replace with your actual data or API call)
-        const transactions = [
-            { date: "2024-05-01", category: "food", amount: 50, type: "expense" },
-            { date: "2024-05-02", category: "transport", amount: 20, type: "expense" },
-            { date: "2024-05-05", category: "entertainment", amount: 100, type: "expense" },
-            { date: "2024-05-10", category: "salary", amount: 2500, type: "income" },
-            { date: "2024-05-15", category: "food", amount: 75, type: "expense" },
-        ];
-
-        // Initialize Chart
-        let reportChart;
-        const ctx = document.getElementById('reportChart').getContext('2d');
-
-        function initChart(filteredData) {
-            if (reportChart) reportChart.destroy(); // Clear old chart
-
-            const categories = [...new Set(filteredData.map(t => t.category))];
-            const expensesByCategory = categories.map(cat => 
-                filteredData.filter(t => t.category === cat && t.type === "expense")
-                           .reduce((sum, t) => sum + t.amount, 0)
-            );
-
-            reportChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: categories,
-                    datasets: [{
-                        label: 'Expenses by Category',
-                        data: expensesByCategory,
-                        backgroundColor: '#4a6fa5',
-                    }]
-                },
-                options: { responsive: true }
-            });
-        }
-
-        // Update Summary Cards
-        function updateSummary(filteredData) {
-            const totalIncome = filteredData.filter(t => t.type === "income")
-                                          .reduce((sum, t) => sum + t.amount, 0);
-            const totalExpense = filteredData.filter(t => t.type === "expense")
-                                           .reduce((sum, t) => sum + t.amount, 0);
-
-            document.getElementById('totalIncome').textContent = `$${totalIncome.toFixed(2)}`;
-            document.getElementById('totalExpense').textContent = `$${totalExpense.toFixed(2)}`;
-        }
-
-        // Filter Data Based on Selections
-        function filterData() {
-            const timeRange = document.getElementById('timeRange').value;
-            const category = document.getElementById('category').value;
-
-            let filtered = [...transactions];
-
-            // Time Filter (simplified)
-            if (timeRange === "30") {
-                filtered = filtered.filter(t => new Date(t.date) >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
-            } else if (timeRange === "thisMonth") {
-                const now = new Date();
-                filtered = filtered.filter(t => new Date(t.date).getMonth() === now.getMonth());
-            } else if (timeRange === "lastMonth") {
-                const lastMonth = new Date().getMonth() - 1;
-                filtered = filtered.filter(t => new Date(t.date).getMonth() === lastMonth);
-            }
-
-            // Category Filter
-            if (category !== "all") {
-                filtered = filtered.filter(t => t.category === category);
-            }
-
-            return filtered;
-        }
-
-        // Generate Report
-        document.getElementById('generateBtn').addEventListener('click', () => {
-            const filteredData = filterData();
-            initChart(filteredData);
-            updateSummary(filteredData);
-        });
-
-        // Initial Load
-        window.addEventListener('load', () => {
-            initChart(transactions);
-            updateSummary(transactions);
-        });
-    </script>
 </body>
 </html>

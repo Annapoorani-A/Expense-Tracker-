@@ -93,32 +93,48 @@
                 padding: 15px;
             }
         }
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Add Transaction</h1>
         <form method="POST" action="{{ url_for('add_transaction') }}">
-            <div class="form-group">
-                <label for="type_id">Transaction Type</label>
-                <select id="type_id" name="type_id" required>
-                    {% for type in types %}
-                    <option value="{{ type.id }}">{{ type.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="form-group">
+                <div class="form-group">
+    <label for="type">Transaction Type</label>
+    <select id="type" name="type" required class="form-control">
+    <option value="income" {% if default_type == 'income' %}selected{% endif %}>Income</option>
+    <option value="expense" {% if default_type == 'expense' %}selected{% endif %}>Expense</option>
+    <option value="saving" {% if default_type == 'saving' %}selected{% endif %}>Saving</option>
+</select>
+</div>
+                <div class="form-group">
                 <label for="category_id">Category</label>
-                <select id="category_id" name="category_id" required>
-                    <option value="Hospital">Hospital</option>
-                    <option value="food">Food</option>
-                    {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
+               <select id="category_id" name="category_id" required>
+    <option value="" disabled selected>Select a category</option>
+    
+    <!-- Default Categories -->
+    {% set default_cats = categories|selectattr('is_default')|list %}
+    {% if default_cats %}
+    <optgroup label="Default Categories">
+        {% for category in default_cats %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </optgroup>
+    {% endif %}
+    
+    <!-- User Categories -->
+    {% set user_cats = categories|rejectattr('is_default')|list %}
+    {% if user_cats %}
+    <optgroup label="Your Categories">
+        {% for category in user_cats %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </optgroup>
+    {% endif %}
+</select>
+</div>     
             <div class="form-group">
                 <label for="amount">Amount</label>
                 <input type="number" id="amount" name="amount" step="0.01" min="0.01" required>
@@ -142,7 +158,6 @@
                 <label for="notes">Notes</label>
                 <textarea id="notes" name="notes" rows="3"></textarea>
             </div>
-            
             <div class="form-actions">
                 <a href="{{ url_for('transactions') }}" class="btn btn-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">Save Transaction</button>
