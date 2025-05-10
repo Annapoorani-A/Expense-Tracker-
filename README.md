@@ -39,9 +39,9 @@ EXPENSE6/
 🛠️ Tech Stack
 Backend: Python, Flask
 
-Frontend: HTML, Bootstrap (if used)
+Frontend: HTML, Bootstrap
 
-Database: SQLite (or your database of choice)
+Database: MySql(phpmyadmin)
 
 Template Engine: Jinja2
 Developed By ANNAPOORANI A and ARUNTHATHI D
