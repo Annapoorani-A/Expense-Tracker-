@@ -1,53 +1,47 @@
-📊 Personal Expense Tracker
-A full-stack web application to monitor your spending habits, categorize transactions, and visualize financial health.
+💸 Expense Tracker
+A web-based Expense Tracker application built with Python and Flask, designed to help users manage their income, expenses, and budgeting goals efficiently. This project allows users to register, log in, and track their financial activity with intuitive dashboards and reports.
 
-🎯 Perfect for: Budget-conscious individuals, families, and financial enthusiasts
+🚀 Features
+User Authentication: Secure login and registration system.
 
-🚀 Key Features
-Transaction Management
-💰 Income/Expense Tracking - Log all financial transactions with detailed notes
-🏷️ Smart Categorization - Automatic sorting (Food, Transportation, Bills, etc.)
-📆 Date Filtering - View by day/week/month/year
-🔄 Recurring Payments - Set up automatic repeating transactions
+Dashboard: Overview of financial activity including budgets, transactions, and categories.
 
-Financial Insights
-📈 Visual Dashboards - Interactive charts showing spending patterns
-📊 Budget Tools - Set monthly limits per category
-🧮 Savings Calculator - Project future savings goals
+Transactions: Add, edit, and view detailed expense and income entries.
 
-User Experience
-👤 Multi-User Support - Separate financial profiles
-🔐 Secure Login - Encrypted authentication
-📱 Responsive Design - Works on all devices
-🌓 Dark/Light Mode - Eye-friendly viewing options
+Budgets: Set and monitor budget limits.
 
-Advanced Tools
-📤 Data Export - Download CSV/PDF reports
-📥 Bank Sync - Connect external accounts (future)
-🔔 Alerts - Notifications for unusual spending
+Categories: Organize your transactions under customizable categories.
 
+Reports: Visual reports for monthly spending and income analysis.
+
+User Profile: Manage personal account settings.
+
+🗂️ Project Structure
+graphql
+Copy
+Edit
+EXPENSE6/
+├── app.py                # Main Flask application file
+├── templates/            # HTML templates for frontend
+│   ├── add_transaction.html
+│   ├── budgets.html
+│   ├── categories.html
+│   ├── dashboard.html
+│   ├── edit_category.html
+│   ├── edit_transaction.html
+│   ├── home.html
+│   ├── login.html
+│   ├── profile.html
+│   ├── register.html
+│   ├── reports.html
+│   └── transactions.html
+└── __pycache__/          # Compiled Python files
 🛠️ Tech Stack
-Category	Technologies
-Frontend	HTML5, CSS3, JavaScript, Chart.js
-Backend	Python (Flask), Jinja2 templating
-Database	MySQL (XAMPP/phpMyAdmin)
-Security	Flask-Login, password hashing
-🗂️ Repository Structure
-EXPENSE_TRACKER/
-├── app/
-│   ├── static/            # CSS/JS/Images
-│   ├── templates/         # All HTML pages
-│   ├── __init__.py        # Flask app setup
-│   ├── auth.py            # Login/registration
-│   ├── models.py          # Database schema
-│   └── routes.py          # Application logic
-├── migrations/            # DB migration files
-├── requirements.txt       # Python dependencies
-├── expense_tracker.sql    # Database schema
-└── README.md              # Deployment guide
-📌 Future Roadmap
-✉️ Email reports - Weekly spending summaries
-💳 OCR Receipt Scanning - Photo-to-transaction conversion
-🌍 Multi-Currency Support - For international users
-🤖 AI Suggestions - Personalized saving tips
+Backend: Python, Flask
 
+Frontend: HTML, Bootstrap (if used)
+
+Database: SQLite (or your database of choice)
+
+Template Engine: Jinja2
+Developed By ANNAPOORANI A and ARUNTHATHI D
